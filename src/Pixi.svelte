@@ -3,7 +3,7 @@
   import {tick} from 'svelte';
 
   const pixiApp = new PIXI.Application({ width: 960, height: 720, transparent: true });
-  const texturesFile = 'textures/cars.json';
+
   const bodyContainer = new PIXI.Container();
   const partsContainer = new PIXI.Container();
 
@@ -13,6 +13,7 @@
     pixiBlock.appendChild(pixiApp.view);
   })
 
+  export let texturesFile;
   export let bodyStyle;
   export let bodyParts;
   export let percentage;
@@ -58,7 +59,6 @@
     .load(handlerLoadComplete);
 
   function handlerLoadComplete() {
-    console.log('Textures loaded!');
     let texturesList = loader.resources[texturesFile];
     Object.keys(texturesList.textures).forEach((el) => {
       let sprite = new PIXI.Sprite(texturesList.textures[el]);
@@ -87,5 +87,5 @@
   }
 </script>
 
-<div bind:this={pixiBlock}>
+<div class="canvas-wrapper" bind:this={pixiBlock}>
 </div>

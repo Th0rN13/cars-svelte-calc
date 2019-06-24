@@ -1,9 +1,14 @@
 import App from './App.svelte';
 
+let path = '/wp-content/themes/bunker36/js/';
+
+let target = document.querySelector('#app');
+
 const app = new App({
-  target: document.querySelector('#app'),
+  target: target,
   props: {
-    type: 'tint'
+    appTypeProp: target.dataset.apptype,
+    path: path
   }
 });
 

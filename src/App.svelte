@@ -1,18 +1,19 @@
 <script>
   import { tick } from 'svelte';
   import Pixi from './Pixi.svelte';
-  // import prices from './prices.json';
   let isResolved = false;
   let prices = {};
 
+  export let appTypeProp = 'tint';
+  export let path = '';
+
   async function getPrices() {
     let result;
-    await fetch('prices.json')
+    await fetch(path+'prices.json')
       .then((res) => (res.json()))
       .then((res) => (result = res));
     isResolved = true;
     prices = result;
-    console.log(prices);
     return result;
   }
   getPrices();
@@ -98,7 +99,7 @@
   }
 
   let selected = {
-    appType: 'tint',
+    appType: appTypeProp,
     oldApp: '',
     bodyStyle: elementsUI.bodyStyles[0].name,
     oldBodyStyle: '',
@@ -166,15 +167,6 @@
 </script>
 
 <div class="app-wrapper">
-
-  <div class="select-app-wrapper">
-    {#each selectApps as selectedApp}
-      <input id={selectedApp.name} type="radio" name="appType" value={selectedApp.name} bind:group={selected.appType} />
-      <label class="label" for={selectedApp.name} >
-        {selectedApp.description}
-      </label>
-    {/each}
-  </div>
   <h1>{appName}</h1>
 
   <div class="elements-wrapper">
@@ -182,7 +174,7 @@
       {#each elementsUI.bodyStyles as bodyStyle}
         <input id={bodyStyle.name}  type="radio" name="body-style" value={bodyStyle.name} bind:group={selected.bodyStyle} />
         <label for={bodyStyle.name} >
-          <img src='img/{bodyStyle.name}.png' alt={bodyStyle.description} />
+          <img src='{path}img/{bodyStyle.name}.png' alt={bodyStyle.description} />
         </label>
       {/each}
     </div>
@@ -209,7 +201,6 @@
 
     {#if selected.appType === 'tint'}
       <div class="tints-wrapper">
-
         {#each elementsUI.filmBrands as filmBrand}
           <div class="view__list d-flex">
             <div class="view__item">
@@ -232,7 +223,7 @@
 
     </div>
 
-  <div>
+  <div class="price-wrapper">
     <p>Цена: {price}</p>
   </div>
 
@@ -241,5 +232,6 @@
     bodyParts={selected.bodyParts.filter(e => !(filteredParts.find((el) => (el.name === e)).disabled))}
     percentage={percentage}
     tintColor={tintColor}
+    texturesFile={path+'textures/cars.json'}
   />
 </div>
